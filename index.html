@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<!-- =============================================
+     LIVE CODE RUNNER - Professional Code Editor 2026
+     =============================================
+     Developer     : MAINUL ISLAM
+     Version       : 1.0.0
+     Contact       : +8801308850528
+     Email         : githubmainul@gmail.com
+     Telegram      : @mdmainulislaminfo
+     GitHub        : M41NUL
+     Website       : https://m41nul.github.io/live-code-runner/
+     Copyright     : © 2026 MAINUL - X
+     License       : MIT License
+     ============================================= -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Live Code Runner · MAINUL - X</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/M41NUL/mainul-x-portfolio/main/assets/images/favicon.ico">
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/M41NUL/mainul-x-portfolio/main/assets/images/favicon.ico" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CodeMirror for syntax highlighting and autocomplete -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/material-darker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+    
+    <style>
+        /* ========== ROOT VARIABLES ========== */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-editor: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --text-bold: #ffffff;
+            --border-color: #222222;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --tab-active: #2d2d2d;
+            --tab-inactive: #1f1f1f;
+        }
+
+        /* Light Theme */
+        .light-mode {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --bg-editor: #fafafa;
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            --text-bold: #000000;
+            --border-color: #e5e5e5;
+            --tab-active: #e5e5e5;
+            --tab-inactive: #f0f0f0;
+        }
+
+        /* ========== GLOBAL STYLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Bold text styles */
+        .font-extrabold {
+            font-weight: 800;
+            color: var(--text-bold);
+        }
+
+        /* ========== CUSTOM SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .logo-box {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .logo-box:hover {
+            transform: scale(1.05);
+            background: var(--accent-hover);
+        }
+
+        .favicon-img {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .title {
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: -0.02em;
+            color: var(--text-bold);
+        }
+
+        .badge {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* ========== THEME TOGGLE ========== */
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-editor);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            color: white;
+            transform: rotate(45deg);
+        }
+
+        /* ========== TABS ========== */
+        .tabs {
+            display: flex;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 1.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab i {
+            font-size: 1.1rem;
+        }
+
+        .tab:hover {
+            color: var(--accent);
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background: linear-gradient(to top, rgba(59, 130, 246, 0.05), transparent);
+        }
+
+        /* ========== EDITOR CONTAINER ========== */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--bg-editor);
+        }
+
+        .code-panel {
+            display: none;
+            height: 100%;
+            position: relative;
+        }
+
+        .code-panel.active {
+            display: block;
+        }
+
+        /* CodeMirror Customization */
+        .CodeMirror {
+            height: 100% !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+            background: var(--bg-editor) !important;
+            color: var(--text-primary) !important;
+        }
+
+        .CodeMirror-gutters {
+            background: var(--bg-secondary) !important;
+            border-right: 1px solid var(--border-color) !important;
+        }
+
+        .CodeMirror-linenumber {
+            color: var(--text-secondary) !important;
+        }
+
+        .CodeMirror-cursor {
+            border-left: 2px solid var(--accent) !important;
+        }
+
+        /* Auto-complete dropdown */
+        .CodeMirror-hints {
+            position: absolute;
+            z-index: 10;
+            overflow: hidden;
+            list-style: none;
+            margin: 0;
+            padding: 2px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background: var(--bg-secondary) !important;
+            border: 1px solid var(--border-color) !important;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .CodeMirror-hint {
+            margin: 2px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            white-space: pre;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        li.CodeMirror-hint-active {
+            background: var(--accent) !important;
+            color: white !important;
+        }
+
+        /* ========== TOOLBAR ========== */
+        .toolbar {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-run {
+            background: var(--accent);
+            color: white;
+            padding: 0.6rem 1.8rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-run:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-run:active {
+            transform: translateY(0);
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--bg-editor);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .btn-icon:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* ========== DEVELOPER INFO - ALWAYS VISIBLE ========== */
+.dev-info {
+    padding: 0.6rem 1.5rem;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+    min-height: 48px;
+    width: 100%;
+    z-index: 10;
+    position: relative;
+}
+
+@media (max-width: 640px) {
+    .dev-info {
+        gap: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.7rem;
+        min-height: 40px;
+    }
+}
+
+.dev-info a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dev-info a:hover {
+    color: var(--accent);
+}
+
+.dev-info .separator {
+    color: var(--border-color);
+    font-weight: 300;
+}
+
+.dev-info .highlight {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 640px) {
+            .header {
+                padding: 0.5rem 1rem;
+            }
+            
+            .tabs {
+                padding: 0 1rem;
+            }
+            
+            .tab {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .toolbar {
+                padding: 0.5rem 1rem;
+            }
+            
+            .btn-run {
+                padding: 0.5rem 1.5rem;
+                font-size: 0.8rem;
+            }
+            
+            .dev-info {
+                gap: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+<div class="header flex items-center justify-between">
+    <div class="flex items-center gap-3">
+        <!-- Profile Picture -->
+        <img src="https://raw.githubusercontent.com/M41NUL/mainul-x-portfolio/main/assets/images/profile.jpg" 
+             alt="MAINUL - X" 
+             class="w-9 h-9 rounded-full border-2 border-cyan-400 object-cover">
+        
+        <!-- Favicon (hidden, backup) -->
+        <img src="https://raw.githubusercontent.com/M41NUL/mainul-x-portfolio/main/assets/images/favicon.ico" 
+             alt="Logo" 
+             class="favicon-img hidden"
+             onerror="this.style.display='none';">
+        <div class="logo-box hidden">
+            <i class="fas fa-code"></i>
+        </div>
+        
+        <!-- Title and Badge -->
+        <div class="flex items-center gap-2">
+            <span class="title">Live Code Runner</span>
+            <span class="badge">v1.0.0</span>
+        </div>
+    </div>
+    
+    <div class="flex items-center gap-2">
+        <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </div>
+        <a href="https://github.com/M41NUL" target="_blank" class="btn-icon">
+            <i class="fab fa-github"></i>
+        </a>
+    </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('html', event)">
+        <i class="fab fa-html5"></i>
+        HTML
+    </div>
+    <div class="tab" onclick="switchTab('css', event)">
+        <i class="fab fa-css3-alt"></i>
+        CSS
+    </div>
+    <div class="tab" onclick="switchTab('js', event)">
+        <i class="fab fa-js"></i>
+        JavaScript
+    </div>
+</div>
+    <!-- Editor Container -->
+    <div class="editor-container">
+<!-- HTML Panel -->
+<div id="html-panel" class="code-panel active">
+    <textarea id="html-code" name="html-code">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Preview&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;MAINUL - X!&lt;/h1&gt;
+    &lt;button onclick="alert('Hi')"&gt;Click&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+</div>
+        
+<!-- CSS Panel - Empty -->
+<div id="css-panel" class="code-panel">
+    <textarea id="css-code" name="css-code"></textarea>
+</div>
+        
+<!-- JavaScript Panel - Empty -->
+<div id="js-panel" class="code-panel">
+    <textarea id="js-code" name="js-code"></textarea>
+</div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="flex items-center gap-2">
+            <button class="btn-icon" onclick="formatCode()" title="Format Code">
+                <i class="fas fa-magic"></i>
+            </button>
+            <button class="btn-icon" onclick="clearEditor()" title="Clear">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div>
+        
+        <button class="btn-run" onclick="runCode()">
+            <i class="fas fa-play"></i>
+            Run Code
+        </button>
+        
+        <div class="flex items-center gap-2">
+            <button class="btn-icon" onclick="saveCode()" title="Save">
+                <i class="fas fa-save"></i>
+            </button>
+            <button class="btn-icon" onclick="copyCode()" title="Copy">
+                <i class="fas fa-copy"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Developer Info - Force visible -->
+<div class="dev-info" style="display: flex !important; min-height: 40px; padding: 8px 16px; background: var(--bg-secondary); border-top: 1px solid var(--border-color);">
+    <span>© 2026 <span class="highlight">MAINUL - X</span></span>
+    <span class="separator">|</span>
+    <a href="https://github.com/M41NUL" target="_blank"><i class="fab fa-github"></i> M41NUL</a>
+    <span class="separator">|</span>
+    <a href="https://wa.me/8801308850528" target="_blank"><i class="fab fa-whatsapp"></i> +8801308850528</a>
+    <span class="separator">|</span>
+    <a href="https://t.me/mdmainulislaminfo" target="_blank"><i class="fab fa-telegram"></i> @mdmainulislaminfo</a>
+</div>
+
+    <!-- CodeMirror Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/xml-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/html-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/css-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/javascript-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closetag.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/comment/comment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldgutter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/brace-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/xml-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/comment-fold.min.js"></script>
+    
+    <script>
+        // Initialize CodeMirror editors with autocomplete
+        const htmlEditor = CodeMirror.fromTextArea(document.getElementById('html-code'), {
+            mode: 'htmlmixed',
+            theme: 'dracula',
+            lineNumbers: true,
+            autoCloseTags: true,
+            matchBrackets: true,
+            indentUnit: 4,
+            tabSize: 4,
+            lineWrapping: true,
+            extraKeys: {
+                'Ctrl-Space': 'autocomplete',
+                'Ctrl-/': 'toggleComment',
+                'Ctrl-D': 'deleteLine',
+                'Ctrl-Z': 'undo',
+                'Ctrl-Shift-Z': 'redo'
+            },
+            hintOptions: {
+                completeSingle: false,
+                hint: function(cm) {
+                    const cur = cm.getCursor();
+                    const token = cm.getTokenAt(cur);
+                    
+                    if (cm.getMode().name === 'htmlmixed') {
+                        return CodeMirror.hint.html(cm);
+                    } else if (cm.getMode().name === 'css') {
+                        return CodeMirror.hint.css(cm);
+                    } else if (cm.getMode().name === 'javascript') {
+                        return CodeMirror.hint.javascript(cm);
+                    }
+                }
+            }
+        });
+
+        const cssEditor = CodeMirror.fromTextArea(document.getElementById('css-code'), {
+            mode: 'css',
+            theme: 'dracula',
+            lineNumbers: true,
+            autoCloseTags: true,
+            matchBrackets: true,
+            indentUnit: 4,
+            tabSize: 4,
+            lineWrapping: true,
+            extraKeys: {
+                'Ctrl-Space': 'autocomplete',
+                'Ctrl-/': 'toggleComment',
+                'Ctrl-D': 'deleteLine',
+                'Ctrl-Z': 'undo',
+                'Ctrl-Shift-Z': 'redo'
+            },
+            hintOptions: {
+                completeSingle: false,
+                hint: CodeMirror.hint.css
+            }
+        });
+
+        const jsEditor = CodeMirror.fromTextArea(document.getElementById('js-code'), {
+            mode: 'javascript',
+            theme: 'dracula',
+            lineNumbers: true,
+            autoCloseTags: true,
+            matchBrackets: true,
+            indentUnit: 4,
+            tabSize: 4,
+            lineWrapping: true,
+            extraKeys: {
+                'Ctrl-Space': 'autocomplete',
+                'Ctrl-/': 'toggleComment',
+                'Ctrl-D': 'deleteLine',
+                'Ctrl-Z': 'undo',
+                'Ctrl-Shift-Z': 'redo'
+            },
+            hintOptions: {
+                completeSingle: false,
+                hint: CodeMirror.hint.javascript
+            }
+        });
+
+        // Enable autocomplete on typing
+        function autoCompleteOnTyping(cm) {
+            cm.showHint({ completeSingle: false });
+        }
+
+        htmlEditor.on('inputRead', autoCompleteOnTyping);
+        cssEditor.on('inputRead', autoCompleteOnTyping);
+        jsEditor.on('inputRead', autoCompleteOnTyping);
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+                htmlEditor.setOption('theme', 'material-darker');
+                cssEditor.setOption('theme', 'material-darker');
+                jsEditor.setOption('theme', 'material-darker');
+            } else {
+                icon.className = 'fas fa-moon';
+                htmlEditor.setOption('theme', 'dracula');
+                cssEditor.setOption('theme', 'dracula');
+                jsEditor.setOption('theme', 'dracula');
+            }
+        }
+
+        // Switch tabs
+        function switchTab(tab, event) {
+            // Update tab classes
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Update panels
+            document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(`${tab}-panel`).classList.add('active');
+            
+            // Refresh editor for better rendering
+            if (tab === 'html') htmlEditor.refresh();
+            if (tab === 'css') cssEditor.refresh();
+            if (tab === 'js') jsEditor.refresh();
+        }
+
+        // Run code
+        function runCode() {
+            const html = htmlEditor.getValue();
+            const css = cssEditor.getValue();
+            const js = jsEditor.getValue();
+            
+            const combinedCode = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>${css}</style>
+                </head>
+                <body>
+                    ${html}
+                    <script>${js}<\/script>
+                </body>
+                </html>
+            `;
+            
+            const blob = new Blob([combinedCode], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        }
+
+        // Format code
+        function formatCode() {
+            const activePanel = document.querySelector('.code-panel.active');
+            if (activePanel.id === 'html-panel') {
+                htmlEditor.execCommand('selectAll');
+                htmlEditor.execCommand('indentAuto');
+            } else if (activePanel.id === 'css-panel') {
+                cssEditor.execCommand('selectAll');
+                cssEditor.execCommand('indentAuto');
+            } else if (activePanel.id === 'js-panel') {
+                jsEditor.execCommand('selectAll');
+                jsEditor.execCommand('indentAuto');
+            }
+        }
+
+        // Clear current editor
+        function clearEditor() {
+            if (confirm('Clear all code in this panel?')) {
+                const activePanel = document.querySelector('.code-panel.active');
+                if (activePanel.id === 'html-panel') {
+                    htmlEditor.setValue('');
+                } else if (activePanel.id === 'css-panel') {
+                    cssEditor.setValue('');
+                } else if (activePanel.id === 'js-panel') {
+                    jsEditor.setValue('');
+                }
+            }
+        }
+
+        // Save code to file
+        function saveCode() {
+            const html = htmlEditor.getValue();
+            const css = cssEditor.getValue();
+            const js = jsEditor.getValue();
+            
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const content = `<!-- HTML -->\n${html}\n\n/* CSS */\n${css}\n\n// JavaScript\n${js}`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `code-${timestamp}.txt`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        // Copy code to clipboard
+        function copyCode() {
+            const activePanel = document.querySelector('.code-panel.active');
+            let code = '';
+            
+            if (activePanel.id === 'html-panel') {
+                code = htmlEditor.getValue();
+            } else if (activePanel.id === 'css-panel') {
+                code = cssEditor.getValue();
+            } else if (activePanel.id === 'js-panel') {
+                code = jsEditor.getValue();
+            }
+            
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Code copied to clipboard!');
+            });
+        }
+
+        // Auto-save to localStorage
+        function saveToStorage() {
+            localStorage.setItem('livecode_html', htmlEditor.getValue());
+            localStorage.setItem('livecode_css', cssEditor.getValue());
+            localStorage.setItem('livecode_js', jsEditor.getValue());
+        }
+
+        function loadFromStorage() {
+            const html = localStorage.getItem('livecode_html');
+            const css = localStorage.getItem('livecode_css');
+            const js = localStorage.getItem('livecode_js');
+            
+            if (html) htmlEditor.setValue(html);
+            if (css) cssEditor.setValue(css);
+            if (js) jsEditor.setValue(js);
+        }
+
+        // Load saved code on startup
+        loadFromStorage();
+
+        // Auto-save every 30 seconds
+        setInterval(saveToStorage, 30000);
+
+        // Keyboard shortcuts for run
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                runCode();
+            }
+        });
+    </script>
+</body>
+</html>
