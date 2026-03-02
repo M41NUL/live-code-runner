@@ -5,7 +5,7 @@
      Developer     : MAINUL ISLAM
      Version       : 1.0.0
      Contact       : +8801308850528
-     Email         : githubmainul@gmail.com
+     Email         : githubmainul@gmail.com,devmainulislam@gmail.com
      Telegram      : @mdmainulislaminfo
      GitHub        : M41NUL
      Website       : https://m41nul.github.io/live-code-runner/
@@ -345,54 +345,54 @@
         }
 
         /* ========== DEVELOPER INFO - ALWAYS VISIBLE ========== */
-.dev-info {
-    padding: 0.6rem 1.5rem;
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border-color);
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    flex-wrap: wrap;
-    min-height: 48px;
-    width: 100%;
-    z-index: 10;
-    position: relative;
-}
+        .dev-info {
+            padding: 0.6rem 1.5rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+            min-height: 48px;
+            width: 100%;
+            z-index: 10;
+            position: relative;
+        }
 
-@media (max-width: 640px) {
-    .dev-info {
-        gap: 1rem;
-        padding: 0.5rem 1rem;
-        font-size: 0.7rem;
-        min-height: 40px;
-    }
-}
+        @media (max-width: 640px) {
+            .dev-info {
+                gap: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.7rem;
+                min-height: 40px;
+            }
+        }
 
-.dev-info a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: color 0.3s ease;
-    font-weight: 600;
-    white-space: nowrap;
-}
+        .dev-info a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 600;
+            white-space: nowrap;
+        }
 
-.dev-info a:hover {
-    color: var(--accent);
-}
+        .dev-info a:hover {
+            color: var(--accent);
+        }
 
-.dev-info .separator {
-    color: var(--border-color);
-    font-weight: 300;
-}
+        .dev-info .separator {
+            color: var(--border-color);
+            font-weight: 300;
+        }
 
-.dev-info .highlight {
-    color: var(--accent);
-    font-weight: 600;
-}
+        .dev-info .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 640px) {
@@ -476,11 +476,12 @@
         JavaScript
     </div>
 </div>
+
     <!-- Editor Container -->
     <div class="editor-container">
-<!-- HTML Panel -->
-<div id="html-panel" class="code-panel active">
-    <textarea id="html-code" name="html-code">
+        <!-- HTML Panel -->
+        <div id="html-panel" class="code-panel active">
+            <textarea id="html-code" name="html-code">
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;&lt;title&gt;Preview&lt;/title&gt;&lt;/head&gt;
@@ -489,17 +490,18 @@
     &lt;button onclick="alert('Hi')"&gt;Click&lt;/button&gt;
 &lt;/body&gt;
 &lt;/html&gt;</textarea>
-</div>
+        </div>
         
-<!-- CSS Panel - Empty -->
-<div id="css-panel" class="code-panel">
-    <textarea id="css-code" name="css-code"></textarea>
-</div>
+        <!-- CSS Panel - Empty -->
+        <div id="css-panel" class="code-panel">
+            <textarea id="css-code" name="css-code"></textarea>
+        </div>
         
-<!-- JavaScript Panel - Empty -->
-<div id="js-panel" class="code-panel">
-    <textarea id="js-code" name="js-code"></textarea>
-</div>
+        <!-- JavaScript Panel - Empty -->
+        <div id="js-panel" class="code-panel">
+            <textarea id="js-code" name="js-code"></textarea>
+        </div>
+    </div>
 
     <!-- Toolbar -->
     <div class="toolbar">
@@ -528,15 +530,15 @@
     </div>
 
     <!-- Developer Info - Force visible -->
-<div class="dev-info" style="display: flex !important; min-height: 40px; padding: 8px 16px; background: var(--bg-secondary); border-top: 1px solid var(--border-color);">
-    <span>© 2026 <span class="highlight">MAINUL - X</span></span>
-    <span class="separator">|</span>
-    <a href="https://github.com/M41NUL" target="_blank"><i class="fab fa-github"></i> M41NUL</a>
-    <span class="separator">|</span>
-    <a href="https://wa.me/8801308850528" target="_blank"><i class="fab fa-whatsapp"></i> +8801308850528</a>
-    <span class="separator">|</span>
-    <a href="https://t.me/mdmainulislaminfo" target="_blank"><i class="fab fa-telegram"></i> @mdmainulislaminfo</a>
-</div>
+    <div class="dev-info">
+        <span>© 2026 <span class="highlight">MAINUL - X</span></span>
+        <span class="separator">|</span>
+        <a href="https://github.com/M41NUL" target="_blank"><i class="fab fa-github"></i> M41NUL</a>
+        <span class="separator">|</span>
+        <a href="https://wa.me/8801308850528" target="_blank"><i class="fab fa-whatsapp"></i> +8801308850528</a>
+        <span class="separator">|</span>
+        <a href="https://t.me/mdmainulislaminfo" target="_blank"><i class="fab fa-telegram"></i> @mdmainulislaminfo</a>
+    </div>
 
     <!-- CodeMirror Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
